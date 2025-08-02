@@ -14,12 +14,12 @@ extern "C" {
 
         void setInterval(uint32_t interval);
         void start();
-        void restart(); // Restarts the timer from the current moment
+        void restart();
         void stop();
-        bool isReady(); // Checks if the interval has passed
-        bool running(); // Checks if the timer is currently active
-        uint32_t getElapsedTime(); // Time elapsed since start
-        uint32_t getRemainingTime(); // Time remaining until ready
+        bool isReady();
+        bool running();
+        uint32_t getElapsedTime();
+        uint32_t getRemainingTime();
         byte getLength8(); // Returns progress as a byte (0-255)
 
         // Optional: for one-shot timers that stop after being ready

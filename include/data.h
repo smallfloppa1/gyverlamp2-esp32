@@ -1,9 +1,10 @@
 #ifndef DATA_H
 #define DATA_H
 
-// Include necessary libraries/headers for types used in structs/externs
-#include <FastLED.h>         // For CRGB, CHSV, CRGBPalette16
-#include "utils/timer_millis.h" // For the custom TimerMillis class definition
+#include <FastLED.h>
+
+#include "config/config.h"
+#include "utils/timer_millis.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,8 +22,8 @@ struct Config {
   byte adcMode;       // Mode for Analog-to-Digital Converter: GL_ADC_BRI (brightness sensor)
   byte minLight;      // Min raw ADC value from light sensor
   byte maxLight;      // Max raw ADC value from light sensor
-  byte minBright;     // Minimum brightness level (0-255) to scale light sensor to
-  byte maxBright;     // Maximum brightness level (0-255) to scale light sensor to
+  byte minBright;     // Minimum brightness level (0-255)
+  byte maxBright;     // Maximum brightness level (0-255)
   byte bright;        // Current overall brightness
   byte matrix;        // Matrix type for FastLED (e.g., NEO_MATRIX_TOP + NEO_MATRIX_RIGHT + NEO_MATRIX_ZIGZAG)
   // Add other global config parameters here (e.g., WiFi state, effect defaults)
@@ -35,13 +36,9 @@ struct CurrentPreset {
   byte speed;         // Speed of the effect (0-255)
   byte color;         // Base color for effects (0-255 hue)
   bool fromCenter;    // True if effect starts from center, False if from one end
-  // Removed: byte soundReact; // No sound reactivity
   byte bright;        // Brightness specific to this preset
   bool fadeBright;    // True if brightness should fade based on preset value
-  // Removed: byte min;         // No sound reactivity related min/max
-  // Removed: byte max;
   byte advMode;       // Advanced mode (e.g., GL_ADV_CLOCK for clock overlay)
-  // Add other preset parameters here (e.g., custom parameters for specific effects)
 };
 
 // Data structure for storing custom palettes (if used beyond FastLED built-ins)
@@ -59,7 +56,6 @@ struct DawnConfig {
 // Structure to hold current time information
 struct NowTime {
     uint32_t weekMs;  // Milliseconds since the start of the week (or other suitable time base)
-    // Add other time components as needed (e.g., hours, minutes, seconds, day of week)
 };
 
 // --- Global Instances (Declared as extern, defined once in main.cpp) ---
@@ -72,15 +68,15 @@ extern DawnConfig dawn;       // Global dawn configuration
 extern NowTime now;           // Global current time object
 
 // --- Global Timers (Declared as extern, defined once in main.cpp) ---
-extern TimerMillis effTmr;    // Timer for effect updates
-extern TimerMillis dawnTmr;   // Timer for dawn effect duration
+extern TimerMillis effectTimer;    // Timer for effect updates
+extern TimerMillis dawnTimer;   // Timer for dawn effect duration
 extern TimerMillis postDawn;  // Timer for post-dawn bright period
-extern TimerMillis turnoffTmr; // Timer for turn-off animation
-extern TimerMillis blinkTmr;  // Timer for blink animation
+extern TimerMillis turnoffTimer; // Timer for turn-off animation
+extern TimerMillis blinkTimer;  // Timer for blink animation
 
 // --- Global Variables for Master/Slave UDP Communication ---
-extern uint32_t udpTmr;      // Timestamp of last UDP send
-extern uint32_t gotADCtmr;   // Timestamp of last received UDP data (from master)
+extern uint32_t updateTimer;      // Timestamp of last UDP send
+extern uint32_t gotAdcTimer;   // Timestamp of last received UDP data (from master)
 extern int udpLength;        // Length received via UDP
 extern byte udpScale;        // Scale received via UDP
 extern byte udpBright;       // Brightness received via UDP

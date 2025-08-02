@@ -10,17 +10,17 @@
 
 void effectsRoutine() {
   static byte prevEff = 255;
-  if (!effTmr.isReady()) return;
+  if (!effectTimer.isReady()) return;
 
-  if (dawnTmr.running() || postDawn.running()) {
+  if (dawnTimer.running() || postDawn.running()) {
     FastLED.setBrightness(255);
-    byte thisColor = dawnTmr.getLength8();
+    byte thisColor = dawnTimer.getLength8();
     if (postDawn.running()) thisColor = 255;
     fill_solid(leds, MAX_LEDS, ColorFromPalette(HeatColors_p, thisColor, scaleFF(thisColor, dawn.bright), LINEARBLEND));
     drawClock(cfg.length / 2 - 4, 100, 0);
     FastLED.show();
-    if (dawnTmr.isReady()) {
-      dawnTmr.stop();
+    if (dawnTimer.isReady()) {
+      dawnTimer.stop();
       postDawn.setInterval(dawn.post * 60000ul);
       postDawn.restart();
     }
@@ -41,12 +41,12 @@ void effectsRoutine() {
   if (briMode()) {
     if (cfg.role) {
       static uint32_t tmr = 0;
-      if ((millis() - tmr >= 1000) && (millis() - udpTmr >= 1000)) { // Simplified timing, no longer dependent on musicMode
+      if ((millis() - tmr >= 1000) && (millis() - updateTimer >= 1000)) { // Simplified timing, no longer dependent on musicMode
         sendUDP(7, thisLength, thisScale, thisBright);
         tmr = millis();
       }
     } else {
-      if (millis() - gotADCtmr < 4000) {
+      if (millis() - gotAdcTimer < 4000) {
         thisLength = udpLength;
         thisScale = udpScale;
         thisBright = udpBright;
@@ -54,10 +54,10 @@ void effectsRoutine() {
     }
   }
 
-  if (turnoffTmr.running()) thisBright = scaleFF(thisBright, 255 - turnoffTmr.getLength8());
-  else if (blinkTmr.runningStop()) thisBright = scaleFF(thisBright, blinkTmr.getLength8());
-  if (turnoffTmr.isReady()) {
-    turnoffTmr.stop();
+  if (turnoffTimer.running()) thisBright = scaleFF(thisBright, 255 - turnoffTimer.getLength8());
+  else if (blinkTimer.runningStop()) thisBright = scaleFF(thisBright, blinkTimer.getLength8());
+  if (turnoffTimer.isReady()) {
+    turnoffTimer.stop();
     setPower(0);
     return;
   }
@@ -77,7 +77,7 @@ void effectsRoutine() {
         FOR_j(0, cfg.length) {
           FOR_i(0, cfg.width) {
             setPix(i, j, ColorFromPalette(paletteArr[CUR_PRES.palette - 1],
-                                          scalePal(inoise8(
+                                          scalePalette(inoise8(
                                               i * (thisScale / 5) - cfg.width * (thisScale / 5) / 2,
                                               j * (thisScale / 5) - cfg.length * (thisScale / 5) / 2,
                                               (now.weekMs >> 1) * CUR_PRES.speed / 255)),
@@ -87,7 +87,7 @@ void effectsRoutine() {
       } else {
         FOR_i(0, cfg.length) {
           leds[i] = ColorFromPalette(paletteArr[CUR_PRES.palette - 1],
-                                     scalePal(inoise8(i * (thisScale / 5) - cfg.length * (thisScale / 5) / 2,
+                                     scalePalette(inoise8(i * (thisScale / 5) - cfg.length * (thisScale / 5) / 2,
                                                       (now.weekMs >> 1) * CUR_PRES.speed / 255)),
                                      255, LINEARBLEND);
         }
@@ -109,9 +109,9 @@ void effectsRoutine() {
 
     case 3: // ================================= COLOR FADE / CHANGE =================================
       {
-        CRGB thisColor = ColorFromPalette(paletteArr[CUR_PRES.palette - 1], scalePal((now.weekMs >> 5) * CUR_PRES.speed / 255), 10, LINEARBLEND);
+        CRGB thisColor = ColorFromPalette(paletteArr[CUR_PRES.palette - 1], scalePalette((now.weekMs >> 5) * CUR_PRES.speed / 255), 10, LINEARBLEND);
         fill_solid(leds, (size_t)cfg.length * cfg.width, thisColor);
-        thisColor = ColorFromPalette(paletteArr[CUR_PRES.palette - 1], scalePal((now.weekMs >> 5) * CUR_PRES.speed / 255), thisBright, LINEARBLEND);
+        thisColor = ColorFromPalette(paletteArr[CUR_PRES.palette - 1], scalePalette((now.weekMs >> 5) * CUR_PRES.speed / 255), thisBright, LINEARBLEND);
         if (CUR_PRES.fromCenter) {
           fillStrip(cfg.length / 2, cfg.length / 2 + thisLength / 2, thisColor);
           fillStrip(cfg.length / 2 - thisLength / 2, cfg.length / 2, thisColor);
@@ -128,7 +128,7 @@ void effectsRoutine() {
           // Removed: if (CUR_PRES.soundReact == GL_REACT_LEN) bright = (i < cfg.length / 2 + thisLength / 2) ? (thisBright) : (10);
           CRGB thisColor = ColorFromPalette(
                                 paletteArr[CUR_PRES.palette - 1],
-                                scalePal((i * (thisScale * 1.9 + 25) / cfg.length) + ((now.weekMs >> 3) * (CUR_PRES.speed - 128) / 128)),
+                                scalePalette((i * (thisScale * 1.9 + 25) / cfg.length) + ((now.weekMs >> 3) * (CUR_PRES.speed - 128) / 128)),
                                 bright, LINEARBLEND);
           if (cfg.deviceType > 1) fillRow(i, thisColor);
           else leds[i] = thisColor;
@@ -142,7 +142,7 @@ void effectsRoutine() {
           // Removed: if (CUR_PRES.soundReact == GL_REACT_LEN) bright = (i < thisLength) ? (thisBright) : (10);
           CRGB thisColor = ColorFromPalette(
                                 paletteArr[CUR_PRES.palette - 1],
-                                scalePal((i * (thisScale * 1.9 + 25) / cfg.length) + ((now.weekMs >> 3) * (CUR_PRES.speed - 128) / 128)),
+                                scalePalette((i * (thisScale * 1.9 + 25) / cfg.length) + ((now.weekMs >> 3) * (CUR_PRES.speed - 128) / 128)),
                                 bright, LINEARBLEND);
           if (cfg.deviceType > 1) fillRow(i, thisColor);
           else leds[i] = thisColor;
@@ -170,12 +170,12 @@ void effectsRoutine() {
             offsY = cfg.length / 2 * offsY / 128;
             int thisY = homeY + offsY;
             setPix(thisX, thisY, CUR_PRES.fromPal ?
-                   ColorFromPalette(paletteArr[CUR_PRES.palette - 1], scalePal(i * 255 / amount), 255, LINEARBLEND) :
+                   ColorFromPalette(paletteArr[CUR_PRES.palette - 1], scalePalette(i * 255 / amount), 255, LINEARBLEND) :
                    CHSV(CUR_PRES.color, 255, 255)
                   );
           } else {
             setLED(thisX, CUR_PRES.fromPal ?
-                   ColorFromPalette(paletteArr[CUR_PRES.palette - 1], scalePal(i * 255 / amount), 255, LINEARBLEND) :
+                   ColorFromPalette(paletteArr[CUR_PRES.palette - 1], scalePalette(i * 255 / amount), 255, LINEARBLEND) :
                    CHSV(CUR_PRES.color, 255, 255)
                   );
           }
@@ -238,7 +238,7 @@ void effectsRoutine() {
         FOR_i(0, amount) {
           int x = random(0, (long)cfg.length * cfg.width);
           if (leds[x] == CRGB(0, 0, 0)) leds[x] = CUR_PRES.fromPal ?
-                                          ColorFromPalette(paletteArr[CUR_PRES.palette - 1], scalePal((byte)(i * 255 / amount)), 255, LINEARBLEND) :
+                                          ColorFromPalette(paletteArr[CUR_PRES.palette - 1], scalePalette((byte)(i * 255 / amount)), 255, LINEARBLEND) :
                                           CHSV(CUR_PRES.color, 255, 255);
         }
         FOR_i(0, (size_t)cfg.length * cfg.width) {
@@ -256,7 +256,7 @@ void effectsRoutine() {
           thisPos = map(thisPos, 50, 200, 0, cfg.width);
           byte scale = 4;
           FOR_j(0, scale) {
-            CRGB color = ColorFromPalette(paletteArr[CUR_PRES.palette - 1], scalePal((byte)(j * 255 / scale)), (255 - (byte)(j * 255 / (scale - 1))), LINEARBLEND);
+            CRGB color = ColorFromPalette(paletteArr[CUR_PRES.palette - 1], scalePalette((byte)(j * 255 / scale)), (255 - (byte)(j * 255 / (scale - 1))), LINEARBLEND);
             if (j == 0) {
               setPixOverlap(thisPos, i, color);
             } else {

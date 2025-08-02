@@ -1,7 +1,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <Arduino.h> // For basic Arduino types and digitalRead()
+#include <Arduino.h>
 #include "utils/timer_millis.h" // For debounce/click timers
 
 #ifdef __cplusplus
@@ -14,10 +14,8 @@ extern "C" {
         BTN_CLICK,
         BTN_LONG_PRESS,
         BTN_DOUBLE_CLICK
-        // Add more events as needed
     };
 
-    // Button class to manage button state and events
     class Button {
     public:
         Button(byte pin, uint32_t debounceDelayMs = 50);

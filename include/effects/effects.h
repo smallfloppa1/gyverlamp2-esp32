@@ -1,7 +1,7 @@
 #ifndef EFFECTS_H
 #define EFFECTS_H
 
-#include "data.h" // Includes global data structures and externs
+#include "data.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -11,11 +11,10 @@ extern "C" {
     void effectsRoutine();
 
     // Helper functions to determine effect parameters (brightness, length, scale)
-    // These no longer rely on sound analysis.
     bool briMode();    // Checks if ADC is in brightness sensor mode
     byte getBright();  // Calculates the current brightness based on config/sensor
-    int getLength();   // Returns the current effect length (no sound reactivity)
-    byte getScale();   // Returns the current effect scale (no sound reactivity)
+    int getLength();   // Returns the current effect length
+    byte getScale();   // Returns the current effect scale
 
 #ifdef __cplusplus
 }

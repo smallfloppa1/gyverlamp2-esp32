@@ -2,19 +2,19 @@
 #define CONFIG_H
 
 // --- Hardware Pin Definitions ---
-#define LED_DATA_PIN        D2    // Example for NodeMCU/ESP32 Dev Kit (use GPIO number like 2 for ESP32)
+#define LED_DATA_PIN        D2
 #define PHOTORESISTOR_PIN   A0    // Example for analog input (e.g., GPIO 34 for ESP32)
-#define BUTTON_PIN          D3    // Example button pin
+#define BUTTON_PIN          D3
 
 // --- LED Strip Configuration ---
-#define NUM_LEDS            256   // Total number of LEDs on your strip/matrix
-#define LED_TYPE            WS2812B // Or SK6812, etc.
-#define COLOR_ORDER         GRB   // Or RGB, BGR, etc. (Check your strip)
+#define NUM_LEDS            256   // Total number of LEDs
+#define LED_TYPE            WS2812B
+#define COLOR_ORDER         GRB
 
 // --- Network Configuration (if using WiFi/UDP) ---
 #define WIFI_SSID           "YourWiFiSSID"
 #define WIFI_PASS           "YourWiFiPassword"
-#define UDP_PORT            8888  // Port for UDP communication (e.g., for master/slave or remote control)
+#define UDP_PORT            8888  // Port for UDP communication
 #define NTP_SERVER          "pool.ntp.org" // NTP server for time synchronization
 
 // --- Default Values / Constants ---
@@ -22,7 +22,7 @@
 #define MIN_BRIGHTNESS      10    // Minimum allowed brightness
 #define MAX_BRIGHTNESS      220   // Maximum allowed brightness
 #define MAX_EFFECTS         11    // Total number of effects implemented
-#define MAX_PALETTES        1     // Total number of custom palettes (if you expand beyond one)
+#define MAX_PALETTES        1     // Total number of custom palettes
 
 // --- Master/Slave Role ---
 // #define IS_MASTER           true  // Uncomment if this device is the master in a multi-device setup

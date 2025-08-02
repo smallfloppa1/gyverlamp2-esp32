@@ -1,7 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <Arduino.h> // For basic types like byte, int
+#include <Arduino.h>
 
 #ifdef __cplusplus
 extern "C" {

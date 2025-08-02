@@ -1,15 +1,14 @@
 #ifndef CUSTOM_TIME_H
 #define CUSTOM_TIME_H
 
-#include <Arduino.h> // For millis() and other basic Arduino functions
+#include <Arduino.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    // Declare functions related to custom time tracking or calculations
     uint32_t getCustomTimeElapsed();
-    void updateCustomTime(); // Might update global 'now' struct or similar
+    void updateCustomTime();
 
 #ifdef __cplusplus
 }

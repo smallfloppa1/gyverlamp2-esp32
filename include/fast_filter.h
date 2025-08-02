@@ -1,13 +1,12 @@
 #ifndef FAST_FILTER_H
 #define FAST_FILTER_H
 
-#include <Arduino.h> // For basic types like byte, int, etc.
+#include <Arduino.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    // Example of a simple moving average filter
     class MovingAverageFilter {
     public:
         MovingAverageFilter(int windowSize);
@@ -23,7 +22,6 @@ extern "C" {
         int _index;
     };
 
-    // You might also have global filter functions if not class-based
     int applyExponentialFilter(int currentValue, int previousValue, float alpha);
 
 #ifdef __cplusplus
