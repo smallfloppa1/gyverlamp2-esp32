@@ -18,23 +18,23 @@ extern "C" {
 
     class Button {
     public:
-        Button(byte pin, uint32_t debounceDelayMs = 50);
+        Button(byte pin) : _pin(pin) {};
         void tick(); // Call this frequently in loop()
         ButtonEvent getEvent();
         bool isPressed();
 
     private:
         byte _pin;
-        uint32_t _debounceDelay;
-        uint32_t _lastDebounceTime;
-        bool _lastButtonState;
-        bool _currentButtonState;
+        uint32_t _debounceDelay{};
+        uint32_t _lastDebounceTime{};
+        bool _lastButtonState{};
+        bool _currentButtonState{};
         ButtonEvent _currentEvent;
 
         // Add timers for long press, double click etc.
         TimerMillis _pressTimer;
         TimerMillis _clickTimer;
-        int _clickCount;
+        int _clickCount{};
     };
 
 #ifdef __cplusplus

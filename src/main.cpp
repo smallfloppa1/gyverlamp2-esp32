@@ -1,30 +1,46 @@
 #include <Arduino.h>
-#include <WiFi.h>
-#include <EEPROM.h>
 #include <FastLED.h>
+
+#include "config/config.h"
+#include "data.h"
+#include "core/button.h"
+
+Config config;
+CurrentPreset CURR_PRESET;
+CRGB leds[NUM_LEDS];
+CRGBPalette16 paletteArr[MAX_PALETTES];
+PaletteData palette;
+DawnConfig dawn;
+NowTime now;
+Button button(BUTTON_PIN);
+
+TimerMillis effectsTimer(50);
+TimerMillis dawnTimer;
+TimerMillis postDawn;
+TimerMillis turnoffTimer;
+TimerMillis blinkTimer;
+
+uint32_t udpTimer = 0;                 // Timestamp of last UDP send by master
+uint32_t gotAdcTimer = 0;              // Timestamp of last received UDP data by slave
+int udpLength = 0;                   // Length parameter received via UDP
+byte udpScale = 0;                   // Scale parameter received via UDP
+byte udpBright = 0;                  // Brightness parameter received via UDP
+
+int btnClicks = 0;                   // Counter for button clicks
+int brTicks = 0;                     // Counter for brightness adjustments
+
+
 
 void setup()
 {
-    Serial.begin(115200);
-    delay(100);
+    delay(INIT_DELAY_MILLIS);
+    Serial.begin(BAUD_RATE);
 
-    EEPROM.begin(EEPROM_SIZE);
 
-    setupWiFi();
-    setupTime();
 
-    FastLED.addLeds<CHIPSET, STRIP_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
-    FastLED.setBrightness(BRIGHTNESS);
-
-    loadPresets();
-
-    setupButton();         // from button.cpp (if modularized)
 }
 
 void loop()
 {
-    handleButton();        // Handle single/double/long press
-    runCurrentEffect();    // Run the currently selected LED effect
-    FastLED.show();        // Push frame to strip
-    delay(FRAME_DELAY_MS); // Slight delay to control frame rate
+
 }

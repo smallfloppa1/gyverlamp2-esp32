@@ -1,10 +1,14 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+// --- Core ---
+#define INIT_DELAY_MILLIS   2000
+#define BAUD_RATE           115200
+
 // --- Hardware Pin Definitions ---
-#define LED_DATA_PIN        D2
-#define PHOTORESISTOR_PIN   A0    // Example for analog input (e.g., GPIO 34 for ESP32)
-#define BUTTON_PIN          D3
+#define LED_DATA_PIN        "D2"
+#define PHOTORESISTOR_PIN   "A0"    // Example for analog input (e.g., GPIO 34 for ESP32)
+#define BUTTON_PIN          "D3"
 
 // --- LED Strip Configuration ---
 #define NUM_LEDS            256   // Total number of LEDs
@@ -15,17 +19,18 @@
 #define WIFI_SSID           "YourWiFiSSID"
 #define WIFI_PASS           "YourWiFiPassword"
 #define UDP_PORT            8888  // Port for UDP communication
-#define NTP_SERVER          "pool.ntp.org" // NTP server for time synchronization
+#define NTP_SERVER          "pl.pool.ntp.org" // NTP server for time synchronization
 
 // --- Default Values / Constants ---
-#define DEFAULT_BRIGHTNESS  60   // Default LED brightness (0-255)
+#define DEFAULT_BRIGHTNESS  10   // Default LED brightness (0-255)
 #define MIN_BRIGHTNESS      10    // Minimum allowed brightness
 #define MAX_BRIGHTNESS      220   // Maximum allowed brightness
 #define MAX_EFFECTS         11    // Total number of effects implemented
 #define MAX_PALETTES        1     // Total number of custom palettes
 
 // --- Master/Slave Role ---
-// #define IS_MASTER           true  // Uncomment if this device is the master in a multi-device setup
+
+#define IS_MASTER           false  // Change to "true" if this device is the master in a multi-device setup
                                    // Otherwise, it's implicitly a slave or standalone.
 
 // --- Time Configuration ---

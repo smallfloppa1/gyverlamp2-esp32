@@ -1,8 +1,6 @@
 #include "effects/effects.h"
 #include "effects/led_control.h"
 #include "effects/palettes.h"
-#include "effects/effect_fire_2d.h"
-#include "effects/effect_fire_2020.h"
 
 #include <Arduino.h>
 #include <FastLED.h>
@@ -10,7 +8,7 @@
 
 void effectsRoutine() {
   static byte prevEff = 255;
-  if (!effectTimer.isReady()) return;
+  if (!effectsTimer.isReady()) return;
 
   if (dawnTimer.running() || postDawn.running()) {
     FastLED.setBrightness(255);

@@ -68,7 +68,7 @@ extern DawnConfig dawn;       // Global dawn configuration
 extern NowTime now;           // Global current time object
 
 // --- Global Timers (Declared as extern, defined once in main.cpp) ---
-extern TimerMillis effectTimer;    // Timer for effect updates
+extern TimerMillis effectsTimer;    // Timer for effect updates
 extern TimerMillis dawnTimer;   // Timer for dawn effect duration
 extern TimerMillis postDawn;  // Timer for post-dawn bright period
 extern TimerMillis turnoffTimer; // Timer for turn-off animation
